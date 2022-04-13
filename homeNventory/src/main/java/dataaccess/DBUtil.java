@@ -1,5 +1,5 @@
 
-package dataAccess;
+package dataaccess;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

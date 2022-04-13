@@ -14,6 +14,20 @@ public class UserService {
         return user;
     }
     
+    public User login(String email, String password) {
+        try {
+            User user = this.get(email);
+            if (user.getPassword().equals(password)) {
+                return user;
+            } else {
+                return null;
+        }  
+        } catch(Exception ex) {
+            return null;
+        }
+        
+    }
+    
     public List<User> getAll() throws Exception {
         List<User> users = this.userDb.getAll();
         return users;

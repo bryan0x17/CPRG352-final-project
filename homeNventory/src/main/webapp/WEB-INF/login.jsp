@@ -21,6 +21,7 @@
             <button type="submit">Login</button>
         </form>
         <a href="resetPassword">Forgot password?</a>
+        <p>${message}</p>
         <p>New user? <a href="register">Sign up here</a>.</p>
     </body>
 </html>

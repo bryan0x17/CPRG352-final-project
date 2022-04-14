@@ -13,6 +13,7 @@
     </head>
     <body>
         <h1>Dashboard</h1>
+        <a href="account">Account</a>
         <a href="login">Logout</a>
     </body>
 </html>

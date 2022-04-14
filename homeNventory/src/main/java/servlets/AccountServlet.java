@@ -67,13 +67,16 @@ public class AccountServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String query = request.getQueryString();
         HttpSession session = request.getSession();
-        String firstName = request.getParameter("firstname");
-        String lastName = request.getParameter("lastname");
         // Since the user can't change their email, we get it from the session and not the form
         String email = (String) session.getAttribute("email");
-        String password = request.getParameter("password");
+        UserService userService = new UserService();
         String message = "";
+
+        String firstName = request.getParameter("firstname");
+        String lastName = request.getParameter("lastname");
+        String password = request.getParameter("password");
 
         if (firstName == null || firstName.isBlank()
                 || lastName == null || lastName.isBlank()
@@ -83,13 +86,20 @@ public class AccountServlet extends HttpServlet {
 
         } else {
             try {
-                UserService userService = new UserService();
-                //If the username and password match
-                if (userService.login(email, password) != null) {
+                if (userService.login(email, password) == null) {
+                    message = "Your password is not correct";
+                } //If the username and password match
+                else if (query.contains("deactivate")) {
+                    User user = userService.get(email);
+                    userService.update(email, false, user.getFirstName(), user.getLastName(), user.getPassword(), new Role(Role.REGULAR_USER));
+                    message = "Your account has been deactivated. Please contact an administrator to reactivate";
+                    request.setAttribute("message", message);
+                    session.invalidate();
+                    getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+                    return;
+                } else {
                     userService.update(email, true, firstName, lastName, password, new Role(Role.REGULAR_USER));
                     message = "Your information has been updated";
-                } else {
-                    message = "Your password is not correct";
                 }
             } catch (Exception ex) {
                 Logger.getLogger(AccountServlet.class.getName()).log(Level.SEVERE, null, ex);

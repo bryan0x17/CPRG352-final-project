@@ -58,7 +58,7 @@ public class LoginServlet extends HttpServlet {
         if (email != null && password != null) {
             UserService userService = new UserService();
             User user = userService.login(email, password);
-            if (user != null) {
+            if (user != null && user.getActive()) {
                 HttpSession session = request.getSession();
                 session.setAttribute("email", email);
                 session.setAttribute("role", user.getRole().getRoleId());
@@ -66,7 +66,7 @@ public class LoginServlet extends HttpServlet {
                 return;
             } else {
                 message = "You could not be logged in. Please try again or reset your password";
-                Logger.getLogger(RegisterServlet.class.getName()).log(Level.INFO, "Incorrect password attempt");
+                Logger.getLogger(RegisterServlet.class.getName()).log(Level.INFO, "Incorrect password or deactivated account");
             }
 
         } else {

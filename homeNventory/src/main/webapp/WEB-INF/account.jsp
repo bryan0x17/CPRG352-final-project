@@ -24,9 +24,11 @@
             <input type="password" name="password" id="password" required>
             <p>Please enter your current password to make any changes to your information</p>
             <p>If you wish to change your email address, you must contact an administrator</p>
+            <p>If you deactivate your account, you will be logged out and your account will be disabled. You will not be able to log back in unless an administrator reactivates your account.</p>
             <button type="submit">Update</button>
+            <button type="submit" formaction="account?deactivate=true">Deactivate</button>
         </form>
-            <a href="home">Home</a>
-            <p>${message}</p>
+        <p>${message}</p>
+        <a href="home">Home</a>
     </body>
 </html>

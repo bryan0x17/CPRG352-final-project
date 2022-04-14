@@ -32,6 +32,10 @@ import javax.validation.constraints.Size;
 public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    // Add role ID's here to make working with users easier
+    public static final Integer SYSTEM_ADMIN = 1;
+    public static final Integer REGULAR_USER = 2;
+    public static final Integer COMPANY_ADMIN = 3;
     @Id
     @Basic(optional = false)
     @NotNull

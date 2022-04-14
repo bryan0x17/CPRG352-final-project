@@ -24,6 +24,7 @@
             <input type="password" name="password" id="password" required>
             <button type="submit">Register</button>
         </form>
+        <p>${message}</p>
         <p>Already have an account? <a href="login">Log in</a></p>
     </body>
 </html>

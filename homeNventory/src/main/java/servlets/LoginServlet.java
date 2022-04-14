@@ -6,6 +6,8 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -64,6 +66,7 @@ public class LoginServlet extends HttpServlet {
                 return;
             } else {
                 message = "You could not be logged in. Please try again or reset your password";
+                Logger.getLogger(RegisterServlet.class.getName()).log(Level.INFO, "Incorrect password attempt");
             }
 
         } else {

@@ -72,14 +72,38 @@ public class UserServlet extends HttpServlet {
                 Category category = categoryService.get(categoryId);
                 User owner = userService.get(email);
                 itemService.insert(name, price, category, owner);
-                this.showItems(request, response);
                 message = "Item added!";
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
                 message = "The item could not be added!";
             }
-
+        // Selecting an item to edit
+        } else if (action != null && action.contains("edit?")) {
+            try {
+                Integer itemId = Integer.parseInt(action.split("\\?", 2)[1]);
+                Item item = itemService.get(itemId);
+                request.setAttribute("item", item);
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                message = "Item could not be edited. Please try again";
+            }
+        // Update an item after editing
+        } else if (action != null && action.equals("update")) {
+            try {
+                String name = request.getParameter("name");
+                double price = Double.parseDouble(request.getParameter("price"));
+                Integer itemId = Integer.parseInt(request.getParameter("id"));
+                Integer categoryId = Integer.parseInt(request.getParameter("category"));
+                Category category = categoryService.get(categoryId);
+                User owner = userService.get(email);
+                itemService.update(itemId, name, price, category, owner);
+                message = "Item updated!";
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                message = "Item could not be updated. Please try again";
+            }
         }
+        this.showItems(request, response);
         request.setAttribute("message", message);
         getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
     }

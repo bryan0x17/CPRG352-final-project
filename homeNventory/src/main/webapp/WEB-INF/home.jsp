@@ -92,14 +92,15 @@
                 <tbody>
                     <tr>
                         <td>
-                            <input type="text" name="name">
+                            <input type="hidden" name="id" value="${item.itemId}">
+                            <input type="text" name="name" value="${item.itemName}">
                         </td>
                         <td>
-                            <input type="number" name="price">
+                            <input type="number" name="price" value="${item.price}">
                         </td>
                         <td>
                             <select name="category">
-                                <option value="">Please select a category</option>
+                                <option value="${item.category.categoryId}">${item.category.categoryName}</option>
                                 <c:forEach var="category" items="${categories}">
                                     <option value="${category.categoryId}">${category.categoryName}</option>
                                 </c:forEach>

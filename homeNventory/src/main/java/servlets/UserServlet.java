@@ -38,23 +38,7 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
-        UserService userService = new UserService();
-        CategoryService categoryService = new CategoryService();
-        String message = "";
-        try {
-            User user = userService.get(email);
-            List<Item> items = user.getItemList();
-            if (items.size() < 1) {
-                message = "You have not added any items yet";
-            }
-            List<Category> categories = categoryService.getAll();
-            request.setAttribute("items", items);
-            request.setAttribute("categories", categories);
-        } catch (Exception ex) {
-            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String message = this.showItems(request, response);
         request.setAttribute("message", message);
         getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
     }
@@ -88,8 +72,8 @@ public class UserServlet extends HttpServlet {
                 Category category = categoryService.get(categoryId);
                 User owner = userService.get(email);
                 itemService.insert(name, price, category, owner);
-                this.doGet(request, response);
-                return;
+                this.showItems(request, response);
+                message = "Item added!";
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
                 message = "The item could not be added!";
@@ -98,6 +82,27 @@ public class UserServlet extends HttpServlet {
         }
         request.setAttribute("message", message);
         getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+    }
+    
+    private String showItems(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+        UserService userService = new UserService();
+        CategoryService categoryService = new CategoryService();
+        String message = "";
+        try {
+            User user = userService.get(email);
+            List<Item> items = user.getItemList();
+            if (items.size() < 1) {
+                message = "You have not added any items yet";
+            }
+            List<Category> categories = categoryService.getAll();
+            request.setAttribute("items", items);
+            request.setAttribute("categories", categories);
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return message;
     }
 
     /**

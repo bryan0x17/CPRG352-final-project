@@ -102,6 +102,16 @@ public class UserServlet extends HttpServlet {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
                 message = "Item could not be updated. Please try again";
             }
+        // Delete an item
+        } else if (action != null && action.contains("delete?")) {
+            try {
+                Integer itemId = Integer.parseInt(action.split("\\?", 2)[1]);
+                itemService.delete(itemId);
+                message = "Item deleted!";
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                message = "Item could not be deleted. Please try again";
+            }
         }
         this.showItems(request, response);
         request.setAttribute("message", message);

@@ -27,8 +27,8 @@ public class ItemService {
         return categories;
     }
     
-    public void insert(Integer itemId, String itemName, double price, Category category, User owner) throws Exception {
-        Item item = new Item(itemId, itemName, price, category, owner);
+    public void insert(String itemName, double price, Category category, User owner) throws Exception {
+        Item item = new Item(itemName, price, category, owner);
         this.itemDb.insert(item);
     }
     

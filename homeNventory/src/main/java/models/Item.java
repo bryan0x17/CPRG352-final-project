@@ -58,12 +58,15 @@ public class Item implements Serializable {
     public Item() {
     }
 
-    public Item(Integer itemId) {
-        this.itemId = itemId;
-    }
-
     public Item(Integer itemId, String itemName, double price, Category category, User owner) {
         this.itemId = itemId;
+        this.itemName = itemName;
+        this.price = price;
+        this.category = category;
+        this.owner = owner;
+    }
+
+    public Item(String itemName, double price, Category category, User owner) {
         this.itemName = itemName;
         this.price = price;
         this.category = category;
@@ -134,5 +137,5 @@ public class Item implements Serializable {
     public String toString() {
         return "models.Item[ itemId=" + itemId + " ]";
     }
-    
+
 }

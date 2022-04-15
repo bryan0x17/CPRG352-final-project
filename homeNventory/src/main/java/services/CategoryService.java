@@ -26,8 +26,8 @@ public class CategoryService {
         return categories;
     }
     
-    public void insert(Integer categoryId, String categoryName) throws Exception {
-        Category category = new Category(categoryId, categoryName);
+    public void insert(String categoryName) throws Exception {
+        Category category = new Category(categoryName);
         this.categoryDb.insert(category);
     }
     

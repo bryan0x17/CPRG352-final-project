@@ -62,7 +62,7 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("email", email);
                 session.setAttribute("role", user.getRole().getRoleId());
-                getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
+                response.sendRedirect("home");
                 return;
             } else {
                 message = "You could not be logged in. Please try again or reset your password";

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.Role;
 import models.User;
 import services.UserService;
 
@@ -62,7 +63,11 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("email", email);
                 session.setAttribute("role", user.getRole().getRoleId());
-                response.sendRedirect("home");
+                if (user.getRole().getRoleId().equals(Role.SYSTEM_ADMIN)) {
+                    response.sendRedirect("admin");
+                } else {
+                    response.sendRedirect("home");
+                }
                 return;
             } else {
                 message = "You could not be logged in. Please try again or reset your password";

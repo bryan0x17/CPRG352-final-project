@@ -32,10 +32,10 @@
                                     <input type="email" name="email">
                                 </td>
                                 <td>
-                                    <input type="text" name="firstName">
+                                    <input type="text" name="firstname">
                                 </td>
                                 <td>
-                                    <input type="text" name="lastName">
+                                    <input type="text" name="lastname">
                                 </td>
                                 <td>
                                     <input type="password" name="password">
@@ -106,20 +106,20 @@
                     <tbody>
                         <tr>
                             <td>
-                                <input type="email" name="email" readonly value="${user.email}">
+                                <input type="email" name="email" value="${user.email}">
                             </td>
                             <td>
-                                <input type="text" name="firstName" value="${user.firstName}">
+                                <input type="text" name="firstname" value="${user.firstName}">
                             </td>
                             <td>
-                                <input type="text" name="lastName" value="${user.lastName}">
+                                <input type="text" name="lastname" value="${user.lastName}">
                             </td>
                             <td>
                                 <input type="password" name="password" value="${user.password}">
                             </td>
                             <td>
                                 <select name="role">
-                                    <option value="">Please select a role</option>
+                                    <option value="${user.role.roleId}">${user.role.roleName}</option>
                                     <c:forEach var="role" items="${roles}">
                                         <option value="${role.roleId}">${role.roleName}</option>
                                     </c:forEach>

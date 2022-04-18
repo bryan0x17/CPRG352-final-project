@@ -20,14 +20,14 @@
                             <tr>
                                 <th>Name</th>
                                 <td>
-                                    <input type="email" name="email">
+                                    <input type="text" name="name">
                                 </td>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>
-                                    <button type="submit" class="btn btn-primary btn-sm" name="action" value="adduser">Add</button>
+                                    <button type="submit" class="btn btn-primary btn-sm" name="action" value="addcategory">Add</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -67,7 +67,8 @@
                     <tbody>
                         <tr>
                             <td>
-                                <input type="email" name="email" readonly value="${user.email}">
+                                <input type="hidden" name="id" value="${category.categoryId}">
+                                <input type="text" name="name" value="${category.categoryName}">
                             </td>
                             <td>
                                 <button type="submit" class="btn btn-primary btn-sm" name="action" value="updatecategory">Save</button>

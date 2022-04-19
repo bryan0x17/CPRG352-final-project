@@ -59,11 +59,14 @@ public class LoginServlet extends HttpServlet {
         if (email != null && password != null) {
             UserService userService = new UserService();
             User user = userService.login(email, password);
+            // Only let the user login if their account is active
             if (user != null && user.getActive()) {
                 HttpSession session = request.getSession();
                 session.setAttribute("email", email);
-                session.setAttribute("role", user.getRole().getRoleId());
-                if (user.getRole().getRoleId().equals(Role.SYSTEM_ADMIN)) {
+                Role role = user.getRole();
+                session.setAttribute("role", role.getRoleId());
+                // Send the user to the admin page if they're a sysadmin
+                if (role.getRoleId().equals(Role.SYSTEM_ADMIN)) {
                     response.sendRedirect("admin");
                 } else {
                     response.sendRedirect("home");

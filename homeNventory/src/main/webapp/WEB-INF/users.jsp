@@ -108,16 +108,16 @@
                         <tr>
                             <td>
                                 <input type="hidden" name="oldemail" value="${user.email}">
-                                <input type="email" name="email" value="${user.email}">
+                                <input type="email" name="email" value="${user.email}" required>
                             </td>
                             <td>
-                                <input type="text" name="firstname" value="${user.firstName}">
+                                <input type="text" name="firstname" value="${user.firstName}" required>
                             </td>
                             <td>
-                                <input type="text" name="lastname" value="${user.lastName}">
+                                <input type="text" name="lastname" value="${user.lastName}" required>
                             </td>
                             <td>
-                                <input type="password" name="password" value="${user.password}">
+                                <input type="password" name="password" value="${user.password}" required>
                             </td>
                             <td>
                                 <select name="role">

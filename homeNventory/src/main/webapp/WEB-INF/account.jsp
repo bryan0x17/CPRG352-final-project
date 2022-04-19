@@ -22,8 +22,9 @@
             <input type="email" name="email" id="email" value="${email}" required>
             <label for="password">Password: </label>
             <input type="password" name="password" id="password" required>
+            <label for="newpassword">New password</label>
+            <input type="password" name="newpassword" id="newpassword">
             <p>Please enter your current password to make any changes to your information</p>
-            <p>If you wish to change your email address, you must contact an administrator</p>
             <p>If you deactivate your account, you will be logged out and your account will be disabled. You will not be able to log back in unless an administrator reactivates your account.</p>
             <button type="submit">Update</button>
             <button type="submit" formaction="account?deactivate=true">Deactivate</button>

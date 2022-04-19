@@ -75,6 +75,7 @@ public class AccountServlet extends HttpServlet {
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         String password = request.getParameter("password");
+        String newPassword = request.getParameter("newpassword");
         String newEmail = request.getParameter("email");
 
         if (firstName == null || firstName.isBlank()
@@ -86,6 +87,7 @@ public class AccountServlet extends HttpServlet {
         } else {
             try {
                 User user = userService.login(oldEmail, password);
+
                 if (user == null) {
                     message = "Your password is not correct";
                 } //If the username and password match
@@ -97,6 +99,9 @@ public class AccountServlet extends HttpServlet {
                     getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
                     return;
                 } else {
+                    if (newPassword != null && !newPassword.isBlank()) {
+                        password = newPassword;
+                    }
                     // If the user is not updating their email
                     if (oldEmail.equals(newEmail)) {
                         userService.update(oldEmail, true, firstName, lastName, password, user.getRole());

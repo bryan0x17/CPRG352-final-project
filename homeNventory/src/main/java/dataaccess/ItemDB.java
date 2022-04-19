@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import models.Item;
+import models.User;
 
 /**
  *
@@ -19,6 +20,18 @@ public class ItemDB {
         
         try {
             Query query = em.createNamedQuery("Item.findAll");
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Item> getByUser(User user) throws Exception {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        
+        try {
+            Query query = em.createNamedQuery("Item.findByOwner");
+            query.setParameter("owner", user);
             return query.getResultList();
         } finally {
             em.close();

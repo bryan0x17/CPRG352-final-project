@@ -23,8 +23,13 @@ public class ItemService {
     }
     
     public List<Item> getAll() throws Exception {
-        List<Item> categories = this.itemDb.getAll();
-        return categories;
+        List<Item> items = this.itemDb.getAll();
+        return items;
+    }
+    
+    public List<Item> getByUser(User user) throws Exception {
+        List<Item> items = this.itemDb.getByUser(user);
+        return items;
     }
     
     public void insert(String itemName, double price, Category category, User owner) throws Exception {

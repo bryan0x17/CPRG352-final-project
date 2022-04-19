@@ -123,10 +123,11 @@ public class UserServlet extends HttpServlet {
         String email = (String) session.getAttribute("email");
         UserService userService = new UserService();
         CategoryService categoryService = new CategoryService();
+        ItemService itemService = new ItemService();
         String message = "";
         try {
             User user = userService.get(email);
-            List<Item> items = user.getItemList();
+            List<Item> items = itemService.getByUser(user);
             if (items.size() < 1) {
                 message = "You have not added any items yet";
             }

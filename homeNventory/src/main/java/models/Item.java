@@ -30,7 +30,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Item.findAll", query = "SELECT i FROM Item i"),
     @NamedQuery(name = "Item.findByItemId", query = "SELECT i FROM Item i WHERE i.itemId = :itemId"),
     @NamedQuery(name = "Item.findByItemName", query = "SELECT i FROM Item i WHERE i.itemName = :itemName"),
-    @NamedQuery(name = "Item.findByPrice", query = "SELECT i FROM Item i WHERE i.price = :price")})
+    @NamedQuery(name = "Item.findByPrice", query = "SELECT i FROM Item i WHERE i.price = :price"),
+    @NamedQuery(name = "Item.findByOwner", query = "SELECT i FROM Item i WHERE i.owner = :owner")})
 public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;

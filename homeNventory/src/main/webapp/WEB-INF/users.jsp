@@ -107,6 +107,7 @@
                     <tbody>
                         <tr>
                             <td>
+                                <input type="hidden" name="oldemail" value="${user.email}">
                                 <input type="email" name="email" value="${user.email}">
                             </td>
                             <td>

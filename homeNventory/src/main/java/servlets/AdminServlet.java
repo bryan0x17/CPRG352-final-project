@@ -129,6 +129,7 @@ public class AdminServlet extends HttpServlet {
         // Update a user
         } else if (action != null && action.equals("updateuser")) {
             try {
+                String oldEmail = request.getParameter("oldemail");
                 String email = request.getParameter("email");
                 String firstName = request.getParameter("firstname");
                 String lastName = request.getParameter("lastname");
@@ -136,7 +137,11 @@ public class AdminServlet extends HttpServlet {
                 Integer roleId = Integer.parseInt(request.getParameter("role"));
                 Role role = roleService.get(roleId);
                 boolean active = request.getParameter("active") != null;
-                userService.update(email, active, firstName, lastName, password, role);
+                if (oldEmail.equals(email)) {
+                    userService.update(email, active, firstName, lastName, password, role);
+                } else {
+                    userService.updateEmail(email, oldEmail, active, firstName, lastName, password, role);
+                }
                 message = "User updated!";
                 request.setAttribute("message", message);
                 this.showUsers(request, response);

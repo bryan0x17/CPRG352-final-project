@@ -19,7 +19,7 @@
             <label for="lastname">Last name: </label>
             <input type="text" name="lastname" id="lastname" value="${lastName}" required>
             <label for="email">Email address: </label>
-            <input type="email" name="email" id="email" value="${email}" required readonly>
+            <input type="email" name="email" id="email" value="${email}" required>
             <label for="password">Password: </label>
             <input type="password" name="password" id="password" required>
             <p>Please enter your current password to make any changes to your information</p>

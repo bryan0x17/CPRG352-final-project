@@ -69,36 +69,42 @@ public class AccountServlet extends HttpServlet {
             throws ServletException, IOException {
         String query = request.getQueryString();
         HttpSession session = request.getSession();
-        // Since the user can't change their email, we get it from the session and not the form
-        String email = (String) session.getAttribute("email");
         UserService userService = new UserService();
         String message = "";
-
+        String oldEmail = (String) session.getAttribute("email");
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         String password = request.getParameter("password");
+        String newEmail = request.getParameter("email");
 
         if (firstName == null || firstName.isBlank()
                 || lastName == null || lastName.isBlank()
-                || email == null || email.isBlank()
+                || newEmail == null || newEmail.isBlank()
                 || password == null || password.isBlank()) {
             message = "Please fill out all fields";
 
         } else {
             try {
-                if (userService.login(email, password) == null) {
+                User user = userService.login(oldEmail, password);
+                if (user == null) {
                     message = "Your password is not correct";
                 } //If the username and password match
-                else if (query.contains("deactivate")) {
-                    User user = userService.get(email);
-                    userService.update(email, false, user.getFirstName(), user.getLastName(), user.getPassword(), new Role(Role.REGULAR_USER));
+                else if (query != null && query.contains("deactivate")) {
+                    userService.update(oldEmail, false, user.getFirstName(), user.getLastName(), user.getPassword(), user.getRole());
                     message = "Your account has been deactivated. Please contact an administrator to reactivate";
                     request.setAttribute("message", message);
                     session.invalidate();
                     getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
                     return;
                 } else {
-                    userService.update(email, true, firstName, lastName, password, new Role(Role.REGULAR_USER));
+                    // If the user is not updating their email
+                    if (oldEmail.equals(newEmail)) {
+                        userService.update(oldEmail, true, firstName, lastName, password, user.getRole());
+                    // If the user is updating their email, we do that through userService
+                    } else {
+                        userService.updateEmail(newEmail, oldEmail, true, firstName, lastName, password, user.getRole());
+                        session.setAttribute("email", newEmail);
+                    }
                     message = "Your information has been updated";
                 }
             } catch (Exception ex) {

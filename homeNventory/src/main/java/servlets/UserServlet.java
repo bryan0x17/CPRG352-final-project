@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import models.Category;
 import models.Item;
+import models.Role;
 import models.User;
 import services.CategoryService;
 import services.ItemService;
@@ -38,7 +39,23 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String message = this.showItems(request, response);
+        String message = "";
+        // Check if the user is an admin
+        HttpSession session = request.getSession();
+        try {
+            Integer roleId = (Integer) session.getAttribute("role");
+            if (roleId.equals(Role.SYSTEM_ADMIN)) {
+                    request.setAttribute("admin", true);
+                }
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+            message = "Something went wrong! Please log in again";
+            request.setAttribute("message", message);
+            getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+            return;
+        }
+
+        message = this.showItems(request, response);
         request.setAttribute("message", message);
         getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
     }
@@ -61,7 +78,6 @@ public class UserServlet extends HttpServlet {
         UserService userService = new UserService();
         CategoryService categoryService = new CategoryService();
         ItemService itemService = new ItemService();
-        
 
         // Adding an item
         if (action != null && action.equals("add")) {
@@ -77,7 +93,7 @@ public class UserServlet extends HttpServlet {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
                 message = "The item could not be added!";
             }
-        // Selecting an item to edit
+            // Selecting an item to edit
         } else if (action != null && action.contains("edit?")) {
             try {
                 Integer itemId = Integer.parseInt(action.split("\\?", 2)[1]);
@@ -87,7 +103,7 @@ public class UserServlet extends HttpServlet {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
                 message = "Item could not be edited. Please try again";
             }
-        // Update an item after editing
+            // Update an item after editing
         } else if (action != null && action.equals("update")) {
             try {
                 String name = request.getParameter("name");
@@ -102,7 +118,7 @@ public class UserServlet extends HttpServlet {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
                 message = "Item could not be updated. Please try again";
             }
-        // Delete an item
+            // Delete an item
         } else if (action != null && action.contains("delete?")) {
             try {
                 Integer itemId = Integer.parseInt(action.split("\\?", 2)[1]);
@@ -117,7 +133,7 @@ public class UserServlet extends HttpServlet {
         request.setAttribute("message", message);
         getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
     }
-    
+
     private String showItems(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");

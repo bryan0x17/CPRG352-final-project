@@ -40,7 +40,7 @@ public class AdminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String query = request.getQueryString();
-        // If the user select manage users
+        // If the user selects manage users
         if (query != null && query.contains("users")) {
             this.showUsers(request, response);
             getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);

@@ -15,6 +15,9 @@
     </head>
     <body>
         <h1>Dashboard</h1>
+        <c:if test="${admin}">
+            <a href="admin">Admin Dashboard</a>
+        </c:if>
         <a href="account">Account</a>
         <a href="login">Logout</a>
         <h2>Inventory</h2>

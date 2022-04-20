@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `inventorydb`.`user` (
   `last_name` VARCHAR(20) NOT NULL,
   `password` VARCHAR(20) NOT NULL,
   `role` INT(11) NOT NULL,
+  `reset_password_UUID` VARCHAR(50) NULL DEFAULT NULL,
   PRIMARY KEY (`email`),
   CONSTRAINT `fk_user_role`
     FOREIGN KEY (`role`)

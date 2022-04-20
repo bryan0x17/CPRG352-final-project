@@ -14,6 +14,7 @@
     </head>
     <body>
         <h1>Admin Dashboard</h1>
+        <a href="home">Manage Inventory</a>
         <a href="admin?users">Manage Users</a>
         <a href="admin?categories">Manage Categories</a>
         <a href="account">Account</a>

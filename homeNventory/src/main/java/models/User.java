@@ -68,6 +68,11 @@ public class User implements Serializable {
     @JoinColumn(name = "role", referencedColumnName = "role_id")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Role role;
+    @Basic(optional = false)
+    @Column(name = "reset_password_UUID")
+    private String resetPasswordUuid;
+
+    
 
     public User() {
     }
@@ -139,6 +144,14 @@ public class User implements Serializable {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+    
+    public String getResetPasswordUuid() {
+        return resetPasswordUuid;
+    }
+
+    public void setResetPasswordUuid(String resetPasswordUuid) {
+        this.resetPasswordUuid = resetPasswordUuid;
     }
 
     @Override

@@ -1,7 +1,11 @@
 package services;
 
 import dataaccess.UserDB;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Item;
 import models.Role;
 import models.User;
@@ -46,6 +50,52 @@ public class UserService {
         // Delete the original entry
         this.delete(oldEmail);
 
+    }
+
+    public void resetPassword(String email, String path, String url) {
+        String uuid = UUID.randomUUID().toString();
+        UserDB userDB = new UserDB();
+        String link = url + "?uuid=" + uuid;
+        try {
+            User user = userDB.get(email);
+            if (user != null) {
+
+                Logger.getLogger(UserService.class.getName()).log(Level.INFO, "Reset password by {0}", email);
+
+                String to = user.getEmail();
+                String subject = "Home nVentory Reset Password";
+                String template = path + "/emailtemplates/resetpassword.html";
+
+                HashMap<String, String> tags = new HashMap<>();
+                tags.put("firstname", user.getFirstName());
+                tags.put("lastname", user.getLastName());
+                tags.put("date", (new java.util.Date()).toString());
+                tags.put("link", link);
+
+                GmailService.sendMail(to, subject, template, tags);
+
+                //Add the uuid to the user database
+                user.setResetPasswordUuid(uuid);
+                userDB.update(user);
+            } else {
+                throw new Exception("No such user");
+            }
+        } catch (Exception e) {
+            Logger.getLogger(UserService.class.getName()).log(Level.WARNING, "Unsuccesfull reset request by " + email, e);
+        }
+    }
+
+    public void changePassword(String email, String password, String uuid) throws Exception {
+        UserDB userDB = new UserDB();
+        User user = userDB.get(email);
+        if (user != null && user.getResetPasswordUuid().equals(uuid)) {
+            user.setPassword(password);
+            user.setResetPasswordUuid(null);
+            userDB.update(user);
+            Logger.getLogger(UserService.class.getName()).log(Level.INFO, "Password changed by {0}", email);
+        } else {
+            throw new Exception("User does not exist or incorrect UUID");
+        }
     }
 
     public List<User> getAll() throws Exception {

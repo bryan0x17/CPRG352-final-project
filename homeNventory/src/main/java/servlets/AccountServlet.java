@@ -44,7 +44,15 @@ public class AccountServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             return;
         }
+
         try {
+            // Check if the user is an admin
+            Integer roleId = (Integer) session.getAttribute("role");
+            if (roleId.equals(Role.SYSTEM_ADMIN)) {
+                request.setAttribute("admin", true);
+            } else {
+                request.setAttribute("admin", false);
+            }
             User user = userService.get(email);
             request.setAttribute("firstName", user.getFirstName());
             request.setAttribute("lastName", user.getLastName());
@@ -105,7 +113,7 @@ public class AccountServlet extends HttpServlet {
                     // If the user is not updating their email
                     if (oldEmail.equals(newEmail)) {
                         userService.update(oldEmail, true, firstName, lastName, password, user.getRole());
-                    // If the user is updating their email, we do that through userService
+                        // If the user is updating their email, we do that through userService
                     } else {
                         userService.updateEmail(newEmail, oldEmail, true, firstName, lastName, password, user.getRole());
                         session.setAttribute("email", newEmail);

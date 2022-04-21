@@ -45,8 +45,10 @@ public class UserServlet extends HttpServlet {
         try {
             Integer roleId = (Integer) session.getAttribute("role");
             if (roleId.equals(Role.SYSTEM_ADMIN)) {
-                    request.setAttribute("admin", true);
-                }
+                request.setAttribute("admin", true);
+            } else {
+                request.setAttribute("admin", false);
+            }
         } catch (Exception ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
             message = "Something went wrong! Please log in again";
@@ -57,6 +59,7 @@ public class UserServlet extends HttpServlet {
 
         message = this.showItems(request, response);
         request.setAttribute("message", message);
+        request.setAttribute("firstname", session.getAttribute("firstname"));
         getServletContext().getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
     }
 

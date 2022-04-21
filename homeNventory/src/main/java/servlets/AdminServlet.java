@@ -43,15 +43,14 @@ public class AdminServlet extends HttpServlet {
         // If the user selects manage users
         if (query != null && query.contains("users")) {
             this.showUsers(request, response);
-            getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
-
-            // if the user selects manage categories
+            getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response); 
         } else if (query != null && query.contains("categories")) {
+            // if the user selects manage categories
             this.showCategories(request, response);
             getServletContext().getRequestDispatcher("/WEB-INF/categories.jsp").forward(request, response);
-            // If the user lands on the admin page
         } else {
-            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
+            // If there's no query, send the user back to the home page
+            response.sendRedirect("home");
         }
     }
 

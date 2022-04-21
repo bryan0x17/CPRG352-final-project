@@ -65,12 +65,8 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("email", email);
                 Role role = user.getRole();
                 session.setAttribute("role", role.getRoleId());
-                // Send the user to the admin page if they're a sysadmin
-                if (role.getRoleId().equals(Role.SYSTEM_ADMIN)) {
-                    response.sendRedirect("admin");
-                } else {
-                    response.sendRedirect("home");
-                }
+                session.setAttribute("firstname", user.getFirstName());
+                response.sendRedirect("home");
                 return;
             } else {
                 message = "You could not be logged in. Please try again or reset your password";

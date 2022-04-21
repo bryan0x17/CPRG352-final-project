@@ -36,6 +36,18 @@ public class UserDB {
             em.close();
         }
     }
+    
+    public User getByActivationUuid(String uuid) throws Exception {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        
+        try {
+            Query query = em.createNamedQuery("User.findByActivationUuid");
+            query.setParameter("uuid", uuid);
+            return (User) query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
 
     public boolean insert(User user) throws Exception {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();

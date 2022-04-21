@@ -33,7 +33,29 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+        String uuid = request.getParameter("uuid");
+        String message = "";
+
+        // If the UUID exists, verify it and activate the account
+        if (uuid != null && !uuid.isBlank()) {
+            UserService userService = new UserService();
+            try {
+                User user = userService.getByActivationUuid(uuid);
+                if (user != null) {
+                    String path = getServletContext().getRealPath("/WEB-INF");
+                    userService.activate(user, path);
+                    message = "Your account has been activated";
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+                message = "Your account could not be activated at this time";
+            }
+            request.setAttribute("message", message);
+            getServletContext().getRequestDispatcher("/WEB-INF/activation.jsp").forward(request, response);
+        } else {
+            getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+        }
+        
     }
 
     /**
@@ -70,8 +92,11 @@ public class RegisterServlet extends HttpServlet {
                 if (user != null) {
                     throw new Exception("Email already in use");
                 } else {
-                    userService.insert(email, true, firstName, lastName, password, new Role(Role.REGULAR_USER));
-                    message = "Account created successfully. Please login to continue.";
+                    userService.insert(email, false, firstName, lastName, password, new Role(Role.REGULAR_USER));
+                    String url = request.getRequestURL().toString();
+                    String path = getServletContext().getRealPath("/WEB-INF");
+                    userService.sendRegistrationEmail(email, path, url);
+                    message = "Account created successfully. Please check your email.";
                     request.setAttribute("message", message);
                     getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
                     return;

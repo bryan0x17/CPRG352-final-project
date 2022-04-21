@@ -33,7 +33,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "User.findByActive", query = "SELECT u FROM User u WHERE u.active = :active"),
     @NamedQuery(name = "User.findByFirstName", query = "SELECT u FROM User u WHERE u.firstName = :firstName"),
     @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
+    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
+    @NamedQuery(name = "User.findByActivationUuid", query = "SELECT u FROM User u WHERE u.activationUuid = :uuid")})
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,12 +72,15 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "reset_password_UUID")
     private String resetPasswordUuid;
+    @Basic(optional = false)
+    @Column(name = "activation_UUID")
+    private String activationUuid;
 
     
 
     public User() {
     }
-
+    
     public User(String email) {
         this.email = email;
     }
@@ -153,6 +157,16 @@ public class User implements Serializable {
     public void setResetPasswordUuid(String resetPasswordUuid) {
         this.resetPasswordUuid = resetPasswordUuid;
     }
+
+    public String getActivationUuid() {
+        return activationUuid;
+    }
+
+    public void setActivationUuid(String activationUuid) {
+        this.activationUuid = activationUuid;
+    }
+    
+    
 
     @Override
     public int hashCode() {

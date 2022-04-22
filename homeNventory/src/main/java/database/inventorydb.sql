@@ -26,10 +26,11 @@ CREATE TABLE IF NOT EXISTS `inventorydb`.`user` (
   `active` TINYINT(1) NOT NULL DEFAULT '1',
   `first_name` VARCHAR(20) NOT NULL,
   `last_name` VARCHAR(20) NOT NULL,
-  `password` VARCHAR(20) NOT NULL,
+  `password` VARCHAR(100) NOT NULL,
   `role` INT(11) NOT NULL,
   `reset_password_UUID` VARCHAR(50) NULL DEFAULT NULL,
   `activation_UUID` VARCHAR(50) NULL DEFAULT NULL,
+  `salt` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`email`),
   CONSTRAINT `fk_user_role`
     FOREIGN KEY (`role`)
@@ -72,14 +73,14 @@ INSERT INTO `category` (`category_name`) VALUES ('utility room');
 INSERT INTO `category` (`category_name`) VALUES ('storage');
 INSERT INTO `category` (`category_name`) VALUES ('other');
 
-INSERT INTO `user` (`email`,`active`,`first_name`,`last_name`,`password`,`role`)
-	VALUES ('cprg352+admin@gmail.com', true, 'Admin','Admin', 'password', 1);
-INSERT INTO `user` (`email`,`active`,`first_name`,`last_name`,`password`,`role`)
-	VALUES ('cprg352+admin2@gmail.com', true, 'Admin2','Admin2', 'password', 3);
-INSERT INTO `user` (`email`,`active`,`first_name`,`last_name`,`password`,`role`)
-	VALUES ('cprg352+anne@gmail.com', true, 'Anne','Annerson', 'password', 2);
-INSERT INTO `user` (`email`,`active`,`first_name`,`last_name`,`password`,`role`)
-	VALUES ('cprg352+barb@gmail.com', true, 'Barb','Barber', 'password', 2);
+INSERT INTO `user` (`email`,`active`,`first_name`,`last_name`,`password`,`role`, `salt`)
+	VALUES ('cprg352+admin@gmail.com', true, 'Admin','Admin', 'uUEvjQAUEgvLZNbfsZ6YCSDEAoobibE+5986UgN1rmYxtEb6SiMKUMSpzYq0PweJ1f79UiE+41Am0pi7FYd89g==', 1, 'A29kyLbKDY1P4sWUNXThrg==');
+INSERT INTO `user` (`email`,`active`,`first_name`,`last_name`,`password`,`role`, `salt`)
+	VALUES ('cprg352+admin2@gmail.com', true, 'Admin2','Admin2', 'cTZWh3XoudIZ5D1vKOfkWgkAWz3klgeLY1boAoERxC12RZEN+CDAXGvKGoMJDZJkI+RufpkYxj33E3Tt5jUHpg==', 3, 'h0MEBk3juvwWTsF51XedBA==');
+INSERT INTO `user` (`email`,`active`,`first_name`,`last_name`,`password`,`role`, `salt`)
+	VALUES ('cprg352+anne@gmail.com', true, 'Anne','Annerson', 'jMjYS37CoHH3XAD34YaAyRWeIcod2C/iU2jLWbgKzlS6AVM2BudVprh/Dx2IiWLQ6r94qxhCSFVuGVa97QZFsA==', 2, 'On3q5QPuLYHgXgUuwcBD0A==');
+INSERT INTO `user` (`email`,`active`,`first_name`,`last_name`,`password`,`role`, `salt`)
+	VALUES ('cprg352+barb@gmail.com', true, 'Barb','Barber', 'x9P46xETMGwsrzgE8+eEdxCZDSv/SgU6nQ/nLN3xrbQEMmUxQhuc249H223MKowCX3M/i+jEgNDzRIRFBEW2FA==', 2, 'wtKTyiiqCdyPfCusbxU/FA==');
 
 INSERT INTO `item` (`category`,`item_name`,`price`,`owner`) VALUES (1, 'blender',29.99,'cprg352+anne@gmail.com');
 INSERT INTO `item` (`category`,`item_name`,`price`,`owner`) VALUES (1, 'toaster',19.99,'cprg352+anne@gmail.com');

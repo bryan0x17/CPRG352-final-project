@@ -75,6 +75,10 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "activation_UUID")
     private String activationUuid;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "salt")
+    private String salt;
 
     
 
@@ -85,13 +89,14 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public User(String email, boolean active, String firstName, String lastName, String password, Role role) {
+    public User(String email, boolean active, String firstName, String lastName, String password, Role role, String salt) {
         this.email = email;
         this.active = active;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.role = role;
+        this.salt = salt;
     }
 
     public String getEmail() {
@@ -165,7 +170,14 @@ public class User implements Serializable {
     public void setActivationUuid(String activationUuid) {
         this.activationUuid = activationUuid;
     }
-    
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
     
 
     @Override

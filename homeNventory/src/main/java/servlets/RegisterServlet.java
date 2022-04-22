@@ -85,10 +85,10 @@ public class RegisterServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
             return;
         } else {
-            // Check if the user already exists
             try {
                 UserService userService = new UserService();
                 User user = userService.get(email);
+                // Check if the user already exists
                 if (user != null) {
                     throw new Exception("Email already in use");
                 } else {

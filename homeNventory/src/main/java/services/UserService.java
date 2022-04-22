@@ -14,20 +14,43 @@ public class UserService {
 
     private UserDB userDb = new UserDB();
 
+    /**
+     * Gets the user record associated with the provided email
+     *
+     * @param email the user's email
+     * @return the User associated with the provided email
+     * @throws Exception
+     */
     public User get(String email) throws Exception {
         User user = this.userDb.get(email);
         return user;
     }
-    
+
+    /**
+     * Gets the user record associated with the provided activation UUID
+     *
+     * @param uuid the activation UUID
+     * @return the User associated with the provided activation UUID
+     * @throws Exception
+     */
     public User getByActivationUuid(String uuid) throws Exception {
         User user = this.userDb.getByActivationUuid(uuid);
         return user;
     }
 
+    /**
+     * Checks if the provided username and password match and return the User
+     *
+     * @param email the user's email (username)
+     * @param password the user's password
+     * @return the User associated with the provided email if the provided
+     * password is correct
+     */
     public User login(String email, String password) {
         try {
             User user = this.get(email);
-            if (user.getPassword().equals(password)) {
+            PasswordService passwordService = new PasswordService();
+            if (passwordService.comparePasswords(password, user.getSalt(), user.getPassword())) {
                 return user;
             } else {
                 return null;
@@ -37,6 +60,20 @@ public class UserService {
         }
     }
 
+    /**
+     * Updates the user's email in the database. Inserts a new user with the new
+     * email and transfers the data from the old record to the new one. Finally,
+     * deletes the old record.
+     *
+     * @param newEmail 
+     * @param oldEmail 
+     * @param active 
+     * @param firstName
+     * @param lastName
+     * @param password
+     * @param role
+     * @throws Exception
+     */
     public void updateEmail(String newEmail, String oldEmail, boolean active, String firstName, String lastName, String password, Role role) throws Exception {
         // Create the new entry in the database
         this.insert(newEmail, active, firstName, lastName, password, role);
@@ -92,6 +129,8 @@ public class UserService {
     public void changePassword(String email, String password, String uuid) throws Exception {
         User user = this.userDb.get(email);
         if (user != null && user.getResetPasswordUuid().equals(uuid)) {
+            PasswordService passwordService = new PasswordService();
+            password = passwordService.encrypt(password, user.getSalt());
             user.setPassword(password);
             user.setResetPasswordUuid(null);
             this.userDb.update(user);
@@ -126,7 +165,7 @@ public class UserService {
             throw new Exception("No such user");
         }
     }
-    
+
     public void activate(User user, String path) throws Exception {
         if (user != null) {
             String to = user.getEmail();
@@ -154,15 +193,26 @@ public class UserService {
     }
 
     public void insert(String email, boolean active, String firstName, String lastName, String password, Role role) throws Exception {
-        User user = new User(email, active, firstName, lastName, password, role);
+        PasswordService passwordService = new PasswordService();
+        String salt = passwordService.generateSalt();
+        password = passwordService.encrypt(password, salt);
+        User user = new User(email, active, firstName, lastName, password, role, salt);
         this.userDb.insert(user);
     }
 
     public void update(String email, boolean active, String firstName, String lastName, String password, Role role) throws Exception {
-        User user = new User(email, active, firstName, lastName, password, role);
+        PasswordService passwordService = new PasswordService();
+        User user = this.get(email);
+        String salt = user.getSalt();
+        // Check if the user changed their password or not - we don't want to rehash their password
+        if (!passwordService.comparePasswords(password, salt, user.getPassword())) {
+            //If the user did change their password, we need to hash it first
+            password = passwordService.encrypt(password, salt);
+        }
+        user = new User(email, active, firstName, lastName, password, role, salt);
         this.userDb.update(user);
     }
-    
+
     public void delete(String email) throws Exception {
         User user = this.get(email);
         this.userDb.delete(user);

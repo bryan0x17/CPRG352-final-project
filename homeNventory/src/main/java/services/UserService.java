@@ -205,7 +205,7 @@ public class UserService {
         User user = this.get(email);
         String salt = user.getSalt();
         // Check if the user changed their password or not - we don't want to rehash their password
-        if (!passwordService.comparePasswords(password, salt, user.getPassword())) {
+        if (!password.equals(user.getPassword())) {
             //If the user did change their password, we need to hash it first
             password = passwordService.encrypt(password, salt);
         }

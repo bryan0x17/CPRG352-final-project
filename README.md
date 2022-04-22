@@ -13,9 +13,13 @@ The core functionality of the app includes:
 - User account management
 - Inventory management
 - Management of accounts by admins
-- Management of categories
+- Management of categories by admins
 
-The app may also have some additional functionality. 
+The app also has some additional functionality:
+- Upon registration, users receive an email with a link they need to follow to activate their account before they can sign in
+- Upon activating their account, users receive a welcome email
+- All user passwords are stored hashed and salted using SHA-512 hashing
+- Users can request a password reset which sends an email with a link to follow 
 
 ## Technologies
 
@@ -25,9 +29,16 @@ The app was built using the following technologies:
 - Tomcat 8
 - Maven
 - Java
-- JDBC
+- JPA
 - MariaDB
+- JSTL
+- Bootstrap
 
 ## Running the app
 
 To run the app as is, download it to your local machine and run the sql file found in the database package within your local MariaDB client. Once the database has been created, open the project and run it from Netbeans.
+
+## References
+
+- All of the styling in the app is courtesy of [Bootstrap](https://getbootstrap.com/). Some small sections of the app (such as the navbar and sign in page) were adapted from Bootstrap examples, but the majority of the user interface was built from scratch with only the styling provided by Bootstrap.
+- The use of the SHA-512 algorithm to hash passwords was taken from [JavaGuides](https://www.javaguides.net/2020/02/java-sha-256-hash-with-salt-example.html) and [Baeldung](https://www.baeldung.com/java-password-hashing). Converting byte arrays to and from base64 was taken from [Mkyong](https://mkyong.com/java/how-do-convert-byte-array-to-string-in-java/).

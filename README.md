@@ -36,7 +36,7 @@ The app was built using the following technologies:
 
 ## Running the app
 
-To run the app as is, download it to your local machine and run the sql file found in the database package within your local MariaDB client. Once the database has been created, open the project and run it from Netbeans.
+To run the app as is, download it to your local machine and run the sql file found in the database package within your local MariaDB client. Add your own email and password to the web.xml. Open the project and run it from Netbeans.
 
 ## References
 
